@@ -59,47 +59,57 @@ function compareNamesToInput(input) {
 //search box listener - fires on each input event
 function search() {
   const input = document.getElementById("search");
-  let preSorted = sortStudents(9, data);
-  presentStudents(preSorted);
-  buttonListen(preSorted);
+  let original = sortStudents(9, data);
+  let pageDiv = document.getElementsByClassName("pagination")[0];
+  pageDiv.insertAdjacentHTML("beforeend", `<ul id="link-list-2"></ul>`);
+  let linkList2 = document.getElementById("link-list-2");
+  linkList2.style.display = "none";
+  presentStudents(original);
+  listen(linkList, original);
 
   input.addEventListener("input", () => {
     let userInput = input.value.toLowerCase();
     let filteredArr = compareNamesToInput(userInput); //returns filtered data from user input
-    let postSorted = sortStudents(9, filteredArr);
-    let removeListener = linkList.removeEventListener("click", listenCB, true);
-    if (input.value === "") {
-      removeListener;
-      console.log("blank");
-      presentStudents(preSorted);
-      buttonListen(preSorted);
-      // } else if (postSorted.every((e) => [""])) {
-      //   console.log(true, postSorted);
-      // studentList.innerHTML = `<p class="no-results">nobody home</p>`;
-    } else {
-      removeListener;
-      console.log(postSorted);
-      presentStudents(postSorted);
-      buttonListen(postSorted);
-    }
+    let sorted = sortStudents(9, filteredArr);
+    console.log(sorted.length, typeof sorted.length);
+    pageDiv.style.display = "block";
 
-    //sorts filtered data into 9-item arrays
-    // if (userInput === "") {
-    //   //resets on blank input field
-    //   presentStudents(x);
-    //   console.log("reset");
-    // } else if (filteredArr.every((e) => e === "")) {
-    //   //handles no results
-    //   studentList.innerHTML = `<li class="no-results">nobody home</li>`;
-    //   linkList.innerHTML = ``;
-    //   console.log("noresults");
-    // } else {
-    //   //presents filtered data, shows buttons, listens to buttons
-    //   let sortedArr = sortStudents(9, filteredArr);
-    //   presentStudents(sortedArr);
-    //   x = sortedArr;
-    //   console.log("else", x);
-    // }
+    if (input.value === "") {
+      console.log("blank");
+      linkList.style.display = "block";
+      linkList2.style.display = "none";
+      presentStudents(original);
+    } else if (sorted.length === 1) {
+      presentStudents(sorted);
+      pageDiv.style.display = "none";
+    } else if (sorted.length < 1) {
+      console.log("no results");
+      studentList.innerHTML = `<p class="no-results">no dice, dude.<p>`;
+    } else {
+      presentStudents(sorted);
+      linkList.style.display = "none";
+      linkList2.style.display = "block";
+      makeButtons(linkList2, sorted);
+      listen(linkList2, sorted);
+    }
+  });
+}
+
+function listen(parent, arr) {
+  parent.children[0].children[0].className = "active";
+  //listens to ul
+  parent.addEventListener("click", (e) => {
+    if (e.target.tagName === "BUTTON") {
+      //precludes non-button ul click issues
+      let button = e.target;
+      let buttonNumber = parseInt(button.innerText);
+      //resets buttons to prevent multiple "active"s
+      for (let i = 0; i < parent.children.length; i++) {
+        parent.children[i].children[0].className = "";
+      }
+      button.className = "active";
+      showStudents(arr[buttonNumber - 1]); //needs subarray, subtracts 1 to account for 0 index value
+    }
   });
 }
 

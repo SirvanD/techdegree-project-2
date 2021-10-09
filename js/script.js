@@ -31,7 +31,7 @@ function sortStudents(n, arr) {
 }
 
 //makes buttons based on the pages array length
-function makeButtons(arr) {
+function makeButtons(parent, arr) {
   let n = arr.length;
   let html = ``;
   for (let i = 1; i <= n; i++) {
@@ -41,9 +41,10 @@ function makeButtons(arr) {
     </li>
     `;
   }
-  linkList.innerHTML = html;
+  parent.innerHTML = html;
 }
 
+//shows student subarray on the page
 function showStudents(subarr) {
   let html = ``;
   for (let i = 0; i < subarr.length; i++) {
@@ -66,29 +67,9 @@ function showStudents(subarr) {
   studentList.innerHTML = html;
 }
 
-//listens for dom events via bubbling to linkList
-function buttonListen(arr) {
-  linkList.children[0].children[0].className = "active";
-  //listens to ul
-  linkList.addEventListener("click", (e) => {
-    if (e.target.tagName === "BUTTON") {
-      //precludes non-button ul click issues
-      let button = e.target;
-      let buttonNumber = parseInt(button.innerText);
-      //resets buttons to prevent multiple "active"s
-      for (let i = 0; i < linkList.children.length; i++) {
-        linkList.children[i].children[0].className = "";
-      }
-      button.className = "active";
-      showStudents(arr[buttonNumber - 1]); //needs subarray, subtracts 1 to account for 0 index value
-    }
-  });
-}
-
 function presentStudents(arr) {
-  makeButtons(arr); //makes buttons based on arr and sets 1 to active initially
+  makeButtons(linkList, arr); //makes initial buttons based on arr and sets 1 to active initially -- had problems with listeners, so generated seperate buttons for search
   showStudents(arr[0]); //initial presentation of students at arr[0];
-  buttonListen(arr); //listens to buttons / resets formatting in cb
 }
 
 presentStudents(sortStudents(9, data));
