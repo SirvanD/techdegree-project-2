@@ -71,11 +71,9 @@ function search() {
     let userInput = input.value.toLowerCase();
     let filteredArr = compareNamesToInput(userInput); //returns filtered data from user input
     let sorted = sortStudents(9, filteredArr);
-    console.log(sorted.length, typeof sorted.length);
     pageDiv.style.display = "block";
 
     if (input.value === "") {
-      console.log("blank");
       linkList.style.display = "block";
       linkList2.style.display = "none";
       presentStudents(original);
@@ -83,8 +81,9 @@ function search() {
       presentStudents(sorted);
       pageDiv.style.display = "none";
     } else if (sorted.length < 1) {
-      console.log("no results");
       studentList.innerHTML = `<p class="no-results">no dice, dude.<p>`;
+      pageDiv.style.display = "none";
+      console.log(pageDiv.style.display);
     } else {
       presentStudents(sorted);
       linkList.style.display = "none";
