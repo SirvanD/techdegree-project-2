@@ -83,7 +83,6 @@ function search() {
     } else if (sorted.length < 1) {
       studentList.innerHTML = `<p class="no-results">no dice, dude.<p>`;
       pageDiv.style.display = "none";
-      console.log(pageDiv.style.display);
     } else {
       presentStudents(sorted);
       linkList.style.display = "none";
