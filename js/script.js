@@ -71,5 +71,3 @@ function presentStudents(arr) {
   makeButtons(linkList, arr); //makes initial buttons based on arr and sets 1 to active initially -- had problems with listeners, so generated seperate buttons for search
   showStudents(arr[0]); //initial presentation of students at arr[0];
 }
-
-presentStudents(sortStudents(9, data));
