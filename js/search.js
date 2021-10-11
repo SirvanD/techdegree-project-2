@@ -84,6 +84,7 @@ function search() {
     let userInput = input.value.toLowerCase();
     let filteredArr = compareNamesToInput(userInput); //returns filtered data from user input
     let sorted = sortStudents(9, filteredArr); //sorts filtered data
+
     /* 
     
         I attempted to move this callback to a seperate function
@@ -112,7 +113,6 @@ function search() {
       linkList2.style.display = "none";
     } else {
       //filtered results with new page buttons
-      console.log(sorted);
       presentStudents(sorted);
       linkList.style.display = "none"; //hides first ul set
       linkList2.style.display = "block"; //reveals second ul

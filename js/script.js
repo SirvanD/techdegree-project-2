@@ -4,22 +4,24 @@ const studentList = document.getElementsByClassName("student-list")[0];
 const linkList = document.getElementsByClassName("link-list")[0];
 
 /*
-    Sorts data into arrays, where "n" represents the desired array quantity limit.
+    Sorts data into arrays.
     This function took a lot of cognitive strain to construct at my skill level, 
     and I consider it a slam dunk. 
 */
 
-function sortStudents(n, arr) {
+function sortStudents(limit, arr) {
   let pages = [[]];
-  let pageLimit = n; //n limits the number of students per page
-  let pageIndex = 0; //pageIndex sets the right subarray value within the pages array
+  //limits the number of students per page
+  let pageLimit = limit;
+  //pageIndex sets the right subarray length limit within the pages array
+  let pageIndex = 0;
   for (let i = 0; i < arr.length; i++) {
     if (i < pageLimit) {
       pages[pageIndex].push(arr[i]);
     } else {
       //adjusts values for next range of students, which get pushed into a new subarray within pages
       pageIndex++;
-      pageLimit += n;
+      pageLimit += limit;
       pages.push([arr[i]]); //creates new subarray & pushes else item into it
     }
   }

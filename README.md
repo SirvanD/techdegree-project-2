@@ -1,7 +1,7 @@
 # Techdegree Project 2 with Search
 
-This version of project 2 includes a functioning search box. My version of the search updates each time the user
-changes the input in the search field. It continuously tests search input against arrays of name chunks.
+I'd like to thank the Team Treehouse team for setting up this
+project, which usefully strained my mind toward considerable growth.
+While I feel certain a Guil H. or other such creature could find 100 ways to refactor my code toward greater syntactic beauty, I am at least satsified that this presentation works to a presentable degree.
 
-Having learned more about the capability of .includes(), I may do this differently in the future. Regardless, I
-feel this product represents a significant advance in my capabilities. Thanks for the good challege.
+At the time of this writing, there is one error that I am not yet able to diagnose and which does not seem to effect behavior. It occurs when clicking the last or second-to-last pagination button, and I hope to determine its cause and remedy it soon.
