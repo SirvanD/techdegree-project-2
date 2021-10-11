@@ -46,7 +46,7 @@ function makeButtons(parent, arr) {
   parent.innerHTML = html;
 }
 
-//shows student subarray on the page
+//constructs and displays student subarray on the page
 function showStudents(subarr) {
   let html = ``;
   for (let i = 0; i < subarr.length; i++) {
