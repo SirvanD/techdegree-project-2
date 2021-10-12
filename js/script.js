@@ -24,59 +24,6 @@ function createSearchField() {
 
 createSearchField();
 
-const searchField = document.getElementById("search");
-let filteredArr;
-
-//checks user input against data
-function searchListen() {
-  searchField.addEventListener("input", () => processInput(searchField));
-}
-
-function processInput(field) {
-  value = field.value.toLowerCase();
-  theGreatArray = filteredData(value);
-  let length = theGreatArray.length;
-  if (length < 1) {
-    wipeButtons();
-    studentList.innerHTML = `<li class="no-results">Notta</li>`;
-  } else if (length === 1) {
-    writeStudentHTML(theGreatArray[0]);
-    wipeButtons();
-  } else {
-    writeStudentHTML(theGreatArray[0]);
-    for (let i = 0; i < liArr.length; i++) {
-      //testing buttons for inclusion
-      var button = liArr[i].children[0].innerText;
-      button = parseInt(button);
-      if (button > length) {
-        liArr[i].style.display = "none";
-      } else {
-        liArr[i].style.display = "inline-block";
-      }
-    }
-  }
-}
-
-function wipeButtons() {
-  for (let i = 0; i < liArr.length; i++) {
-    liArr[i].style.display = "none";
-  }
-}
-
-function filteredData(input) {
-  let filtered = [];
-  for (let i = 0; i < data.length; i++) {
-    const first = data[i].name.first;
-    const last = data[i].name.last;
-    const full = first + " " + last;
-    if (full.toLowerCase().includes(input.toLowerCase())) {
-      filtered.push(data[i]);
-    }
-  }
-  filtered = sortStudents(9, filtered);
-  return filtered;
-}
-
 //sorts data into arrays -- I love this function!
 function sortStudents(limit, arr) {
   let pages = [[]];
@@ -146,7 +93,7 @@ function pageBtnListener(ul, arr) {
   ul.addEventListener("click", (e) => btnCB(e, arr));
 }
 
-//do the things
+//does the button things
 function btnCB(e, arr) {
   if (e.target.tagName === "BUTTON") {
     //reset all button classes, show active
@@ -165,6 +112,59 @@ function btnCB(e, arr) {
       writeStudentHTML(theGreatArray[index]);
     }
   }
+}
+
+//search field listener
+function searchListen() {
+  const searchField = document.getElementById("search");
+  searchField.addEventListener("input", () => processInput(searchField));
+}
+
+//search field listener cb
+function processInput(field) {
+  value = field.value.toLowerCase();
+  theGreatArray = filteredData(value);
+  let length = theGreatArray.length;
+  if (length < 1) {
+    wipeButtons();
+    studentList.innerHTML = `<li class="no-results">Notta</li>`;
+  } else if (length === 1) {
+    writeStudentHTML(theGreatArray[0]);
+    wipeButtons();
+  } else {
+    writeStudentHTML(theGreatArray[0]);
+    for (let i = 0; i < liArr.length; i++) {
+      //testing buttons for inclusion
+      var button = liArr[i].children[0].innerText;
+      button = parseInt(button);
+      if (button > length) {
+        liArr[i].style.display = "none";
+      } else {
+        liArr[i].style.display = "inline-block";
+      }
+    }
+  }
+}
+
+function wipeButtons() {
+  for (let i = 0; i < liArr.length; i++) {
+    liArr[i].style.display = "none";
+  }
+}
+
+//provides filtered data to be used in theGreatArray
+function filteredData(input) {
+  let filtered = [];
+  for (let i = 0; i < data.length; i++) {
+    const first = data[i].name.first;
+    const last = data[i].name.last;
+    const full = first + " " + last;
+    if (full.toLowerCase().includes(input.toLowerCase())) {
+      filtered.push(data[i]);
+    }
+  }
+  filtered = sortStudents(9, filtered);
+  return filtered;
 }
 
 //inital firing
