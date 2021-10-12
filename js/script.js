@@ -2,52 +2,104 @@
 
 const studentList = document.getElementsByClassName("student-list")[0];
 const linkList = document.getElementsByClassName("link-list")[0];
+const theFirstArray = sortStudents(9, data);
+var value = "";
+var theGreatArray = "";
+var liArr = "";
 
-/*
-    Sorts data into arrays.
-    This function took a lot of cognitive strain to construct at my skill level, 
-    and I consider it a slam dunk. 
-*/
+//creates search field
+function createSearchField() {
+  const header = document.querySelector("header");
+  header.insertAdjacentHTML(
+    "beforeend",
+    `
+    <label for="search" class="student-search">
+      <span>Search by name</span>
+      <input id="search" placeholder="Search by name...">
+      <button type="button"><img src="img/icn-search.svg" alt="Search icon"></button>
+    </label>
+  `
+  );
+}
 
+createSearchField();
+
+const searchField = document.getElementById("search");
+let filteredArr;
+
+//checks user input against data
+function searchListen() {
+  searchField.addEventListener("input", () => processInput(searchField));
+}
+
+function processInput(field) {
+  value = field.value.toLowerCase();
+  theGreatArray = filteredData(value);
+  let length = theGreatArray.length;
+  if (length < 1) {
+    wipeButtons();
+    studentList.innerHTML = `<li class="no-results">Notta</li>`;
+  } else if (length === 1) {
+    writeStudentHTML(theGreatArray[0]);
+    wipeButtons();
+  } else {
+    writeStudentHTML(theGreatArray[0]);
+    for (let i = 0; i < liArr.length; i++) {
+      //testing buttons for inclusion
+      var button = liArr[i].children[0].innerText;
+      button = parseInt(button);
+      if (button > length) {
+        liArr[i].style.display = "none";
+      } else {
+        liArr[i].style.display = "inline-block";
+      }
+    }
+  }
+}
+
+function wipeButtons() {
+  for (let i = 0; i < liArr.length; i++) {
+    liArr[i].style.display = "none";
+  }
+}
+
+function filteredData(input) {
+  let filtered = [];
+  for (let i = 0; i < data.length; i++) {
+    const first = data[i].name.first;
+    const last = data[i].name.last;
+    const full = first + " " + last;
+    if (full.toLowerCase().includes(input.toLowerCase())) {
+      filtered.push(data[i]);
+    }
+  }
+  filtered = sortStudents(9, filtered);
+  return filtered;
+}
+
+//sorts data into arrays -- I love this function!
 function sortStudents(limit, arr) {
   let pages = [[]];
-  //limits the number of students per page
   let pageLimit = limit;
-  //pageIndex sets the right subarray length limit within the pages array
   let pageIndex = 0;
   for (let i = 0; i < arr.length; i++) {
     if (i < pageLimit) {
       pages[pageIndex].push(arr[i]);
     } else {
-      //adjusts values for next range of students, which get pushed into a new subarray within pages
       pageIndex++;
       pageLimit += limit;
-      pages.push([arr[i]]); //creates new subarray & pushes else item into it
+      pages.push([arr[i]]);
     }
   }
-  //corrects for blank pages which appear with certain n values
+  //corrects for blank pages which appear with certain limit values
   if (pages.slice(-1)[0].length === 0) {
     pages.splice(-1);
   }
   return pages;
 }
 
-//makes buttons based on the pages array length
-function makeButtons(parent, arr) {
-  let n = arr.length;
-  let html = ``;
-  for (let i = 1; i <= n; i++) {
-    html += `
-    <li>
-      <button type="button">${i}</button>
-    </li>
-    `;
-  }
-  parent.innerHTML = html;
-}
-
-//constructs and displays student subarray on the page
-function showStudents(subarr) {
+//writes subarray html to the page
+function writeStudentHTML(subarr) {
   let html = ``;
   for (let i = 0; i < subarr.length; i++) {
     let name = subarr[i].name.first + " " + subarr[i].name.last;
@@ -69,7 +121,52 @@ function showStudents(subarr) {
   studentList.innerHTML = html;
 }
 
-function presentStudents(arr) {
-  makeButtons(linkList, arr); //makes initial buttons based on arr and sets 1 to active initially -- had problems with listeners, so generated seperate buttons for search
-  showStudents(arr[0]); //initial presentation of students at arr[0];
+//makes buttons based on the pages array length
+function makeButtons(ul) {
+  let limit = sortStudents(9, data).length;
+  let html = ``;
+  for (let i = 1; i <= limit; i++) {
+    html += `
+    <li>
+      <button type="button" class="js-button">${i}</button>
+    </li>
+    `;
+  }
+  ul.innerHTML = html;
+  //initial active button
+  liArr = document.getElementById("link-list").children;
+  liArr[0].children[0].className = "js-button active";
+  //listener
+  pageBtnListener(ul, liArr);
 }
+
+//btn listener
+function pageBtnListener(ul, arr) {
+  writeStudentHTML(theFirstArray[0]);
+  ul.addEventListener("click", (e) => btnCB(e, arr));
+}
+
+//do the things
+function btnCB(e, arr) {
+  if (e.target.tagName === "BUTTON") {
+    //reset all button classes, show active
+    for (let i = 0; i < arr.length; i++) {
+      arr[i].children[0].className = "js-button";
+    }
+    e.target.className = "active";
+    //show the content for the target
+    let index = e.target.innerText;
+    index = parseInt(index) - 1;
+    if (value === "") {
+      //resets for no input
+      writeStudentHTML(theFirstArray[index]);
+    } else {
+      //write based on input
+      writeStudentHTML(theGreatArray[index]);
+    }
+  }
+}
+
+//inital firing
+makeButtons(linkList); //pagination buttons
+searchListen(); //listens for input and manages button visibility

@@ -1,7 +1,7 @@
 # Techdegree Project 2 with Search
 
-I'd like to thank the Team Treehouse team for setting up this
-project, which usefully strained my mind toward considerable growth.
-While I feel certain a Guil H. or other such creature could find 100 ways to refactor my code toward greater syntactic beauty, I am at least satsified that this presentation works to a presentable degree.
+Wow, this project was a major challenge! I was able to complete the 'meets expectations' portion fairly quickly, but figuring out the implementation of the search field was a massive project in and of itself for me.
 
-At the time of this writing, there is one error that I am not yet able to diagnose and which does not seem to effect behavior. It occurs when clicking the last or second-to-last pagination button, and I hope to determine its cause and remedy it soon.
+That said, after many, many hours, copious cognitive strain, and plentiful periods of stuckness, I finally completed a fully-functional, error-free project (so far as I can tell).
+
+I look forward to your feedback. Thanks in advance!
