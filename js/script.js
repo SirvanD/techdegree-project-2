@@ -81,7 +81,7 @@ function makeButtons(ul) {
   }
   ul.innerHTML = html;
   //initial active button
-  liArr = document.getElementById("link-list").children;
+  liArr = document.getElementsByClassName("link-list")[0].children;
   liArr[0].children[0].className = "js-button active";
   //listener
   pageBtnListener(ul, liArr);
@@ -127,7 +127,7 @@ function processInput(field) {
   let length = theGreatArray.length;
   if (length < 1) {
     wipeButtons();
-    studentList.innerHTML = `<li class="no-results">Notta</li>`;
+    studentList.innerHTML = `<li class="no-results">${noDice()}</li>`;
   } else if (length === 1) {
     writeStudentHTML(theGreatArray[0]);
     wipeButtons();
@@ -166,6 +166,22 @@ function filteredData(input) {
   filtered = sortStudents(9, filtered);
   return filtered;
 }
+
+function noDice() {
+  let n = Math.floor(Math.random() * responses.length);
+  return responses[n];
+}
+
+const responses = [
+  "Not here.",
+  "Can't find them.  Sorry.",
+  "These are not the droids you're looking for.",
+  "No dice, friend.  Sorry.",
+  "Haven't seen them lately.",
+  "Quit typing wrong things.",
+  "They ain't here.",
+  "We can't find them :(.",
+];
 
 //inital firing
 makeButtons(linkList); //pagination buttons
