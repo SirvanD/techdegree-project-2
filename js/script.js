@@ -13,7 +13,7 @@ var liArr = ""; //will represent link-list li elements
 
 /*------------------------------------------
 
-    INITIAL PRESENTATIONS AND CALLBACKS
+    INITIAL PRESENTATIONS AND CALLBACKS`
 
 ------------------------------------------*/
 
