@@ -1,11 +1,21 @@
-//declarations
+/*------------------------------
+
+    INITIAL DECLARATIONS
+
+------------------------------*/
 
 const studentList = document.getElementsByClassName("student-list")[0];
 const linkList = document.getElementsByClassName("link-list")[0];
 const theFirstArray = sortStudents(9, data);
-var value = "";
-var theGreatArray = "";
-var liArr = "";
+var value = ""; //will reflect user input
+var theGreatArray = ""; //will be an array of arrays built based on user input
+var liArr = ""; //will represent link-list li elements
+
+/*------------------------------------------
+
+    INITIAL PRESENTATIONS AND CALLBACKS
+
+------------------------------------------*/
 
 //creates search field
 function createSearchField() {
@@ -24,23 +34,23 @@ function createSearchField() {
 
 createSearchField();
 
-//sorts data into arrays -- I love this function!
+//sorts data from data.js into arrays.  I love this function!
 function sortStudents(limit, arr) {
-  let pages = [[]];
-  let pageLimit = limit;
-  let pageIndex = 0;
+  let pages = [[]]; //creates empty initial subarray
+  let pageLimit = limit; //limits number of objects per subarray based on data index
+  let pageIndex = 0; //index of first subarray
   for (let i = 0; i < arr.length; i++) {
     if (i < pageLimit) {
-      pages[pageIndex].push(arr[i]);
+      pages[pageIndex].push(arr[i]); //pushes data object into current subarray
     } else {
-      pageIndex++;
-      pageLimit += limit;
-      pages.push([arr[i]]);
+      pageIndex++; //moves to next subarray
+      pageLimit += limit; //sets new limit for index inclusion in next subarray
+      pages.push([arr[i]]); //pushes current arr[i] into new subarray
     }
   }
   //corrects for blank pages which appear with certain limit values
   if (pages.slice(-1)[0].length === 0) {
-    pages.splice(-1);
+    pages.splice(-1); //removes empty array
   }
   return pages;
 }
@@ -67,6 +77,12 @@ function writeStudentHTML(subarr) {
   }
   studentList.innerHTML = html;
 }
+
+/*---------------
+
+    BUTTONS
+
+---------------*/
 
 //makes buttons based on the pages array length
 function makeButtons(ul) {
@@ -105,14 +121,21 @@ function btnCB(e, arr) {
     let index = e.target.innerText;
     index = parseInt(index) - 1;
     if (value === "") {
+      //value was created in initial declarations and set in processInput(field)
       //resets for no input
-      writeStudentHTML(theFirstArray[index]);
+      writeStudentHTML(theFirstArray[index]); //theFirstArray reflects the first sorting of data from data.js for pagination
     } else {
-      //write based on input
-      writeStudentHTML(theGreatArray[index]);
+      //write based on user clicks
+      writeStudentHTML(theGreatArray[index]); //theGreatArray represents data from data.js filtered against user input and formatted for pagination
     }
   }
 }
+
+/*-------------
+
+    SEARCH
+
+-------------*/
 
 //search field listener
 function searchListen() {
@@ -120,68 +143,75 @@ function searchListen() {
   searchField.addEventListener("input", () => processInput(searchField));
 }
 
-//search field listener cb
+//search field listener cb -- processes input from user
 function processInput(field) {
-  value = field.value.toLowerCase();
-  theGreatArray = filteredData(value);
+  value = field.value.toLowerCase(); //grabs user input / transforms to lowercase for comparison
+  theGreatArray = filteredData(value); //filters data against user input
   let length = theGreatArray.length;
   if (length < 1) {
-    wipeButtons();
+    //no-results
+    wipeButtons(); //hides buttons
     studentList.innerHTML = `<li class="no-results">${noDice()}</li>`;
   } else if (length === 1) {
-    writeStudentHTML(theGreatArray[0]);
-    wipeButtons();
+    //one-page results
+    writeStudentHTML(theGreatArray[0]); //writes results to page
+    wipeButtons(); //hides buttons
   } else {
-    writeStudentHTML(theGreatArray[0]);
-    resetActiveButton();
+    //multi-page results
+    writeStudentHTML(theGreatArray[0]); //writes first page of results to page
+    resetActiveButton(); //resets button classes to "", button 1 to "active"
     for (let i = 0; i < liArr.length; i++) {
-      //testing buttons for inclusion
+      //tests buttons for inclusion
       var button = liArr[i].children[0].innerText;
-      button = parseInt(button);
+      button = parseInt(button); //grabs number object from button
       if (button > length) {
-        liArr[i].style.display = "none";
+        liArr[i].style.display = "none"; //hides unnecessary buttons
       } else {
-        liArr[i].style.display = "inline-block";
+        liArr[i].style.display = "inline-block"; //shows appropriate buttons
       }
     }
   }
 }
 
+//provides filtered data to be used in theGreatArray
+function filteredData(input) {
+  //accepts value from processInput();
+  let filtered = []; //will contain filtered objects from data / data.js
+  for (let i = 0; i < data.length; i++) {
+    const first = data[i].name.first;
+    const last = data[i].name.last;
+    const full = first + " " + last;
+    if (full.toLowerCase().includes(input.toLowerCase())) {
+      //uses .includes to find matches
+      filtered.push(data[i]); //pushes matches to filtered []
+    }
+  }
+  filtered = sortStudents(9, filtered); //organizes matches in 9-length subarrays for presentation
+  return filtered;
+}
+
+//hides buttons when unneeded
 function wipeButtons() {
   for (let i = 0; i < liArr.length; i++) {
     liArr[i].style.display = "none";
   }
 }
 
+//resets active button to match page with user input
 function resetActiveButton() {
   for (let i = 0; i < liArr.length; i++) {
-    liArr[i].children[0].className = "";
+    liArr[i].children[0].className = ""; //makes all buttons inactive
   }
-  // liArr[0].className = "active";
-  liArr[0].children[0].className = "active";
+  liArr[0].children[0].className = "active"; //sets button 1 active
 }
 
-//provides filtered data to be used in theGreatArray
-function filteredData(input) {
-  let filtered = [];
-  for (let i = 0; i < data.length; i++) {
-    const first = data[i].name.first;
-    const last = data[i].name.last;
-    const full = first + " " + last;
-    if (full.toLowerCase().includes(input.toLowerCase())) {
-      filtered.push(data[i]);
-    }
-  }
-  filtered = sortStudents(9, filtered);
-  return filtered;
-}
-
+//no results response messages, randomly selected from const responses
 function noDice() {
-  let n = Math.floor(Math.random() * responses.length);
-  return responses[n];
+  let n = Math.floor(Math.random() * responses.length); //n = random number
+  return responses[n]; //returns response by randomly-selected n index number
 }
 
-//fun responses for no results pages
+//random responses for no-results pages (not in the rubric, just for fun)
 const responses = [
   "Not here.",
   "Can't find them.  Sorry.",
@@ -193,6 +223,11 @@ const responses = [
   "We can't find them :(.",
 ];
 
-//inital firing
+/*---------------------
+
+    INITIAL FIRINGS
+
+---------------------*/
+
 makeButtons(linkList); //pagination buttons
-searchListen(); //listens for input and manages button visibility
+searchListen(); //listens for input and manages button visibility/class
