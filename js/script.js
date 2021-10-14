@@ -182,6 +182,7 @@ function filteredData(input) {
     const last = data[i].name.last;
     const full = first + " " + last;
     if (full.toLowerCase().includes(input.toLowerCase())) {
+      //toLowerCase() for comparison
       //uses .includes to find matches
       filtered.push(data[i]); //pushes matches to filtered []
     }
