@@ -133,6 +133,7 @@ function processInput(field) {
     wipeButtons();
   } else {
     writeStudentHTML(theGreatArray[0]);
+    resetActiveButton();
     for (let i = 0; i < liArr.length; i++) {
       //testing buttons for inclusion
       var button = liArr[i].children[0].innerText;
@@ -150,6 +151,14 @@ function wipeButtons() {
   for (let i = 0; i < liArr.length; i++) {
     liArr[i].style.display = "none";
   }
+}
+
+function resetActiveButton() {
+  for (let i = 0; i < liArr.length; i++) {
+    liArr[i].children[0].className = "";
+  }
+  // liArr[0].className = "active";
+  liArr[0].children[0].className = "active";
 }
 
 //provides filtered data to be used in theGreatArray
@@ -172,6 +181,7 @@ function noDice() {
   return responses[n];
 }
 
+//fun responses for no results pages
 const responses = [
   "Not here.",
   "Can't find them.  Sorry.",
