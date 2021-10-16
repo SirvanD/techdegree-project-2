@@ -1,7 +1,5 @@
 # Techdegree Project 2 with Search
 
-Wow, this project was a major challenge! I was able to complete the 'meets expectations' portion fairly quickly, but figuring out the implementation of the search field while managing the buttons was a massive project in and of itself for me.
+Project 2 challenges students to paginate objects dynamically based on user search. This project pushed the boundaries of my abilities, but I was able to develop a working product.
 
-That said, after many, many hours, copious cognitive strain, and plentiful periods of stuckness, I finally completed a fully-functional, error-free project (so far as I can tell).
-
-I look forward to your feedback. Thanks in advance!
+Many thanks to Team Treehouse for this challenge, which fell on the cutting edge of my zone of proximal development.
